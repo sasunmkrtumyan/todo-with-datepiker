@@ -73,3 +73,9 @@ li {
 .filter {
   margin-top: 40px;
 }
+.date {
+  cursor: pointer;
+  width: 30%;
+  display: flex;
+  justify-content: space-between;
+}

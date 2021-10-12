@@ -1,16 +1,26 @@
-import React from "react";
-import TodoItem from "./TodoItem";
+export default function TodoLIst({ todos, onSelect }) {
+  const dates = {};
 
-export default function TodoLIst({ todos, handleRemove, handleMarkCompleted }) {
-  return todos.map((todo) => {
-    return (
-      <div key={todo.id}>
-        <TodoItem
-          todo={todo}
-          handleRemove={handleRemove}
-          handleMarkCompleted={handleMarkCompleted}
-        />
-      </div>
-    );
+  todos.forEach((todo) => {
+    if (dates[todo.date]) {
+      dates[todo.date] = [...dates[todo.date], todo];
+    } else {
+      dates[todo.date] = [todo];
+    }
   });
+
+  console.log(dates);
+
+  return (
+    <>
+      {Object.keys(dates).map((date) => {
+        return (
+          <div className="date" onClick={() => onSelect(date)}>
+            <p>{date}</p>
+            <p>({dates[date].length})</p>
+          </div>
+        );
+      })}
+    </>
+  );
 }

@@ -2,28 +2,29 @@ import React from "react";
 import { useState } from "react";
 import "./App.css";
 import TodoList from "./components/TodoList";
-import TodoInput from "./components/TodoInput";
-import DatePicker from "react-date-picker";
-import DataPickerList from "./components/DataPickerList";
+import TodoInput from "./components/TodoForm";
 
 export default function App() {
   const [todos, setTodos] = useState([]);
-  const [date, onChange] = useState(new Date());
+  const [selectedDate, setSelectedDate] = useState(null);
 
-  
-  function handleRemove(id) {
-    setTodos([...todos].filter((todo) => todo.id !== id));
-  }
-
-  function handleAdd(text) {
+  function handleAdd(todo) {
     setTodos([
       ...todos,
       {
         id: Math.random(),
-        text,
+        ...todo,
         isCompleted: false,
       },
     ]);
+  }
+
+  function handleSelect(date) {
+    setSelectedDate(date);
+  }
+
+  function handleRemove(id) {
+    setTodos([...todos].filter((todo) => todo.id !== id));
   }
 
   function handleMarkCompleted(id) {
@@ -40,13 +41,19 @@ export default function App() {
     <div className="App">
       <h1 className="header"> To Do List</h1>
       <TodoInput onAdd={handleAdd} />
-      <DatePicker onChange={onChange} value={date} />
-      <TodoList
-        todos={todos}
-        handleRemove={handleRemove}
-        handleMarkCompleted={handleMarkCompleted}
-      />
-      <DataPickerList date={date} />
+      <TodoList todos={todos} onSelect={handleSelect} />
+
+      {todos
+        .filter((todo) => todo.date === selectedDate)
+        .map((todo) => {
+          return (
+            <>
+              <p key={todo.id}>{todo.text}</p>
+              {/* <button onClick={() => handleRemove(todo.id)}>Edit</button> */}
+              <button onClick={() => handleRemove(todo.id)}>Delete</button>
+            </>
+          );
+        })}
     </div>
   );
 }
