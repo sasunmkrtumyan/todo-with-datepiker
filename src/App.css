@@ -75,15 +75,15 @@ li {
   margin-top: 40px;
 }
 .date {
-  margin-top: 50px;
+  margin-top: 10px;
   cursor: pointer;
-  width: 30%;
+  width: 40%;
   display: flex;
   justify-content: space-between;
 }
 .todoItem {
-  margin-top: 50px;
-  width: 50%;
+  margin-top: 20px;
+  width: 70%;
   display: flex;
   align-items: center;
   justify-content: space-between;

@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DatePicker from "react-date-picker";
 
 export default function TodoInput({ onAdd }) {
   const [text, setText] = useState("");
   const [date, setDate] = useState(new Date());
   const [error, setError] = useState(false);
+
 
   function handleChangeText(e) {
     setText(e.target.value);

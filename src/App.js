@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useReducer } from "react";
 import { useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import TodoInput from "./components/TodoForm";
+
+// function reducer(state, action) {
+//   if (action.type === "add") {
+//     return [
+//       ...todos,
+//       {
+//         id: Math.random(),
+//         ...todo,
+//         isCompleted: false,
+//       },
+//     ];
+//   } else if (action.type === "delete") {
+//     return [...todos].filter((todo) => todo.id !== id);
+//   }
+// }
 
 export default function App() {
   const [todos, setTodos] = useState([]);
@@ -11,17 +26,20 @@ export default function App() {
   const [todoEditing, setTodoEditing] = useState(null);
   const [editingText, setEditingText] = useState("");
 
+  // const [todos, dispatch] = useReducer(reducer, [])
+
   useEffect(() => {
-    const temp = localStorage.getItem("todos");
-    const loadedTodos = JSON.parse(temp);
+    const info = localStorage.getItem("todos");
+    const loadedTodos = JSON.parse(info);
+    console.log(info);
     if (loadedTodos) {
       setTodos(loadedTodos);
     }
   }, []);
 
   useEffect(() => {
-    const temp = JSON.stringify(todos);
-    localStorage.setItem("todos", temp);
+    const info = JSON.stringify(todos);
+    localStorage.setItem("todos", info);
   }, [todos]);
 
   function handleAdd(todo) {
@@ -34,6 +52,28 @@ export default function App() {
       },
     ]);
   }
+
+  // function handleAdd(todo) {
+  //   dispatch({
+  //     type: "add",
+  //     payload: {
+  //       todo: todo
+  //     }
+  //   });
+  // }
+
+  function handleRemove(id) {
+    setTodos([...todos].filter((todo) => todo.id !== id));
+  }
+
+  // function handleAdd(id) {
+  //   dispatch({
+  //     type: "delete",
+  //     payload: {
+  //       id: todo.id
+  //     }
+  //   });
+  // }
 
   function handleSelect(date) {
     setSelectedDate(date);
@@ -51,23 +91,16 @@ export default function App() {
     setEditingText("");
   }
 
-  function handleRemove(id) {
-    setTodos([...todos].filter((todo) => todo.id !== id));
-  }
-
   const handleToggle = () => {
     setIsComplited(!isComplited);
   };
 
-  // function handleMarkCompleted(id) {
-  //   const newTodos = todos.map((todo) => {
-  //     if (todo.id === id) {
-  //       return { ...todo, isCompleted: !todo.isCompleted };
-  //     }
-  //     return todo;
-  //   });
-  //   setTodos(newTodos);
-  // }
+  let currentUrl = window.location.href;
+  let params = new URLSearchParams(currentUrl.search);
+  params.set("baz", 3);
+  params.toString();
+
+
 
   return (
     <div className="App">
