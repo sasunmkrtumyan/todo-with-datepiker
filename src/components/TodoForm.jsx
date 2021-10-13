@@ -3,7 +3,7 @@ import DatePicker from "react-date-picker";
 
 export default function TodoInput({ onAdd }) {
   const [text, setText] = useState("");
-  const [date, setDate] = useState(null);
+  const [date, setDate] = useState(new Date());
   const [error, setError] = useState(false);
 
   function handleChangeText(e) {

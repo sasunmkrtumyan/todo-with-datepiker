@@ -1,12 +1,29 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import TodoInput from "./components/TodoForm";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 export default function App() {
   const [todos, setTodos] = useState([]);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [isComplited, setIsComplited] = useState(false);
+  const [todoEditing, setTodoEditing] = useState(null);
+  const [editingText, setEditingText] = useState("");
+
+  useEffect(() => {
+    const temp = localStorage.getItem("todos");
+    const loadedTodos = JSON.parse(temp);
+    if (loadedTodos) {
+      setTodos(loadedTodos);
+    }
+  }, []);
+
+  useEffect(() => {
+    const temp = JSON.stringify(todos);
+    localStorage.setItem("todos", temp);
+  }, [todos]);
 
   function handleAdd(todo) {
     setTodos([
@@ -23,19 +40,35 @@ export default function App() {
     setSelectedDate(date);
   }
 
+  function editTodo(id) {
+    const updateTodos = [...todos].map((todo) => {
+      if (todo.id === id) {
+        todo.text = editingText;
+      }
+      return todo;
+    });
+    setTodos(updateTodos);
+    setTodoEditing(null);
+    setEditingText("");
+  }
+
   function handleRemove(id) {
     setTodos([...todos].filter((todo) => todo.id !== id));
   }
 
-  function handleMarkCompleted(id) {
-    const newTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, isCompleted: !todo.isCompleted };
-      }
-      return todo;
-    });
-    setTodos(newTodos);
-  }
+  const handleToggle = () => {
+    setIsComplited(!isComplited);
+  };
+
+  // function handleMarkCompleted(id) {
+  //   const newTodos = todos.map((todo) => {
+  //     if (todo.id === id) {
+  //       return { ...todo, isCompleted: !todo.isCompleted };
+  //     }
+  //     return todo;
+  //   });
+  //   setTodos(newTodos);
+  // }
 
   return (
     <div className="App">
@@ -47,11 +80,40 @@ export default function App() {
         .filter((todo) => todo.date === selectedDate)
         .map((todo) => {
           return (
-            <>
-              <p key={todo.id}>{todo.text}</p>
-              {/* <button onClick={() => handleRemove(todo.id)}>Edit</button> */}
-              <button onClick={() => handleRemove(todo.id)}>Delete</button>
-            </>
+            <div className="todoItem">
+              <input type="checkbox" onClick={handleToggle} />
+              {todoEditing === todo.id ? (
+                <input
+                  type="text"
+                  onChange={(e) => setEditingText(e.target.value)}
+                  value={editingText}
+                />
+              ) : (
+                <p className={isComplited ? "mark" : false} key={todo.id}>
+                  {todo.text}
+                </p>
+              )}
+
+              <div>
+                {todoEditing === todo.id ? (
+                  <button onClick={() => editTodo(todo.id)}>Submit</button>
+                ) : (
+                  <button
+                    className="butEdit"
+                    onClick={() => setTodoEditing(todo.id)}
+                  >
+                    Edit
+                  </button>
+                )}
+
+                <button
+                  className="butDelete"
+                  onClick={() => handleRemove(todo.id)}
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           );
         })}
     </div>

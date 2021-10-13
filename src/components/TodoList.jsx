@@ -1,3 +1,5 @@
+
+
 export default function TodoLIst({ todos, onSelect }) {
   const dates = {};
 
@@ -8,8 +10,6 @@ export default function TodoLIst({ todos, onSelect }) {
       dates[todo.date] = [todo];
     }
   });
-
-  console.log(dates);
 
   return (
     <>

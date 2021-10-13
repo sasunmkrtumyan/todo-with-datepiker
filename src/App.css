@@ -4,6 +4,7 @@
   list-style-type: none;
   box-sizing: border-box;
   outline: none;
+  font-size: 18px;
 }
 
 .App {
@@ -74,8 +75,32 @@ li {
   margin-top: 40px;
 }
 .date {
+  margin-top: 50px;
   cursor: pointer;
   width: 30%;
   display: flex;
   justify-content: space-between;
+}
+.todoItem {
+  margin-top: 50px;
+  width: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.butEdit {
+  color: rgb(41, 41, 214);
+  margin-right: 10px;
+  padding: 4px;
+  cursor: pointer;
+}
+.mark {
+  color: green;
+  text-decoration: line-through;
+}
+
+.butDelete {
+  color: red;
+  padding: 4px;
+  cursor: pointer;
 }
