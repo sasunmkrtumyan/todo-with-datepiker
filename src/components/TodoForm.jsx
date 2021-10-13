@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import DatePicker from "react-date-picker";
 
 export default function TodoInput({ onAdd }) {

@@ -91,16 +91,15 @@ export default function App() {
     setEditingText("");
   }
 
-  const handleToggle = () => {
-    setIsComplited(!isComplited);
+  const handleToggle = (id) => {
+    const updateTodos = [...todos].map((todo) => {
+      if (todo.id === id) {
+        todo.isCompleted = !todo.isCompleted;
+      }
+      return todo;
+    });
+    setTodos(updateTodos);
   };
-
-  let currentUrl = window.location.href;
-  let params = new URLSearchParams(currentUrl.search);
-  params.set("baz", 3);
-  params.toString();
-
-
 
   return (
     <div className="App">
@@ -113,7 +112,7 @@ export default function App() {
         .map((todo) => {
           return (
             <div className="todoItem">
-              <input type="checkbox" onClick={handleToggle} />
+              <input type="checkbox" onClick={() => handleToggle(todo.id)} />
               {todoEditing === todo.id ? (
                 <input
                   type="text"
@@ -121,7 +120,7 @@ export default function App() {
                   value={editingText}
                 />
               ) : (
-                <p className={isComplited ? "mark" : false} key={todo.id}>
+                <p className={todo.isCompleted ? "mark" : ""} key={todo.id}>
                   {todo.text}
                 </p>
               )}
