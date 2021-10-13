@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import TodoList from "./components/TodoList";
 import TodoInput from "./components/TodoForm";
-import useLocalStorage from "./hooks/useLocalStorage";
 
 export default function App() {
   const [todos, setTodos] = useState([]);
